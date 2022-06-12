@@ -1,3 +1,9 @@
+//Credits goes to Pinsplash, editied by notfoundname#3292. 
+//
+//TO install:
+//1. Download and drop into bin folder (where hammer.exe is located);
+//2. Open Hammer, Tools -> Options... -> Game Configurations -> Game Data Files, add SECSS.fgd;
+//3. Restart Hammer.
 @mapsize(-16384, 16384)
 @MaterialExclusion //Texture folders to not load. You can remove everything from this list if you want, but you probably won't ever use these, they'll make more clutter in Hammer's texture browser, and you'll probably be better off making your own brush/sprite/whatever-friendly versions of them anyway.
 [
@@ -46,6 +52,7 @@
 		"info_player_counterterrorist"
 		"info_player_terrorist"
 		"prop_door_rotating"
+		"prop_vehicle_driveable"
 		"trigger_hurt"
 	]
 	"Interactive things"
@@ -165,8 +172,9 @@
 		"prop_physics_override"
 		"prop_ragdoll"
 		"prop_sphere"
+		"prop_vehicle_driveable"
 	]
-	"Obsolete" //idk if it makes any sense
+	"Obsolete"//idk if it makes any sense
 	[
 		"cycler"
 		"func_conveyor"
@@ -231,6 +239,7 @@
 		"prop_physics_override"
 		"prop_ragdoll"
 		"prop_sphere"
+		"prop_vehicle_driveable"
 		"target_changegravity"
 		"trigger_apply_impulse"
 		"trigger_gravity"
@@ -796,7 +805,9 @@
 	solid(choices) : "Collisions" : 6 : "Method of collision for this entity." =
 	[
 		0 : "None"
+		1 : "BSP (QPhysics)"
 		2 : "Bounding Box"
+		4 : "Oriented Bounding Box"
 		6 : "VPhysics"
 	]
 	ExplodeDamage(float) : "Explosion Damage" : 0 : "If non-zero, when this entity breaks it will create an explosion that causes the specified amount of damage. See also Explosion Radius."
@@ -824,8 +835,8 @@
 	spawnflags(flags) =
 	[
 		64 : "Use Hitboxes for Renderbox TODO: Does this REALLY do that?" : 0
-		128 : "TODO: 'No VPhysics'" : 0
-		256 : "Start with collision disabled" : 0
+		//128 : "TODO: 'No VPhysics'" : 0
+		//256 : "Start with collision disabled" : 0 //these things does not seem to work
 	]
 	StartDisabled(choices) : "Start Disabled" : 0 : "Makes the prop invisible but solid. It can be made visible with the Enable input." =
 	[
@@ -4138,6 +4149,32 @@
 @PointClass base(CPhysicsProp) studioprop() sphere(fademindist) sphere(fademaxdist) sphere() color(255 0 255) = prop_sphere : "A prop with perfectly spherical collisions."
 [
 	radius(integer) readonly : "Size" : 12 : "Size of the collision sphere. Can't be changed."
+]
+@PointClass base(CPhysicsProp) studioprop() = prop_vehicle_driveable : "Driveable vehicle. WARNING: it does not function on vanilla servers. It requires Sourcemod plugin to make it work: https://github.com/Mikusch/source-vehicles"
+[
+	vehiclescript(string) : "Vehicle Script File" : "scripts/vehicles/jeep_test.txt"
+	actionScale(float) : "Scale of action input / framerate" : "1"
+	
+	VehicleLocked(choices) : "Starts locked" : 0 =
+	[
+		0 : "No"
+		1 : "Yes"
+	]	
+	
+	output PlayerOn(void) : "Player entered the vehicle"
+	output PlayerOff(void) : "Player exited the vehicle"
+	output PressedAttack(void) : "Player Pressed attack key"
+	output PressedAttack2(void) : "Player Pressed attack2 key"
+	output AttackAxis(string) : "State of attack button [0,1]"
+	output Attack2Axis(string) : "State of attack2 button [0,1]"
+	
+	input Action(float) : "Set the speed of the action animation"
+	input TurnOn(void) : "Turn on: Start engine & enable throttle"
+	input TurnOff(void) : "Turn off: Stop engine, disable throttle, engage brakes."
+	input Lock(void) : "Prevent the player from entering or exiting the vehicle."
+	input Unlock(void) : "Re-allow the player to enter or exit the vehicle."
+	input HandBrakeOn(void) : "Turns the handbrake on"
+	input HandBrakeOff(void): "Releases the handbrake"
 ]
 @PointClass base(CBaseEntity) iconsprite("editor/shadow_control") color(160 240 37) = shadow_control : "Sets properties of dynamic shadows cast by moving objects."
 [
