@@ -2640,13 +2640,6 @@
 	input SetMovementSpeed(float) : "Sets Movement Speed."
 	input SetDensity(float) : "Sets Density."
 ]
-@SolidClass base(func_tracktrain) = func_tanktrain : "OBSOLETE: You shouldn't use this entity, though it may appear in other people's maps. This entity is buggy and doesn't do what it's supposed to do. You should really use func_tracktrain instead."
-[
-]
-@SolidClass base(func_trackchange) = func_trackautochange : "OBSOLETE: You shouldn't use this entity, though it may appear in other people's maps. This entity was used in Half-Life for platforms that carry a func_tracktrain to another track. You should use another func_tracktrain instead."
-[
-	input Trigger(void) : "Trigger the track change."
-]
 @SolidClass base(func_platrot) = func_trackchange : "OBSOLETE: You shouldn't use this entity, though it may appear in other people's maps. This entity was used in Half-Life for platforms that carry a func_tracktrain to another track. You should use another func_tracktrain instead."
 [
 	height(integer) : "Travel Altitude" : 0 : "The vertical height above the track that the train moves. Negative values moves the train below."
@@ -2729,6 +2722,13 @@
 	input SetSpeedForwardModifier(float) : "TODO: What is this."
 	output OnStart(void) : "Fires when the train starts moving."
 	output OnNextPoint(void) : "Fires rapidly and continuously as the train moves. Activator is the path_track being traveled to."
+]
+@SolidClass base(func_tracktrain) = func_tanktrain : "OBSOLETE: You shouldn't use this entity, though it may appear in other people's maps. This entity is buggy and doesn't do what it's supposed to do. You should really use func_tracktrain instead."
+[
+]
+@SolidClass base(func_trackchange) = func_trackautochange : "OBSOLETE: You shouldn't use this entity, though it may appear in other people's maps. This entity was used in Half-Life for platforms that carry a func_tracktrain to another track. You should use another func_tracktrain instead."
+[
+	input Trigger(void) : "Trigger the track change."
 ]
 @SolidClass base(CBaseEntity,VisibleBrush,Origin,Toggle) = func_train : "Moves along a set of path_tracks. It was replaced with func_tracktrain in Half-Life, but this entity is still useful because it doesn't suffer some of that entity's bugs."
 [
