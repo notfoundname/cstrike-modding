@@ -386,7 +386,7 @@
 ]
 @BaseClass = Effects
 [
-	effects(choices) : "Effect Flags" : 0 : "For configuring visual effects. If you want to combine effects, turn off SmartEdit and change effects value to a sum of needed ones (16 + 256 = 272 - no RTT shadow draw and shade from fullbright to lit)." =
+	effects(choices) : "Effect Flags" : 0 : "For configuring visual effects. If you want to combine effects, turn off SmartEdit and change effects value to a sum of needed ones (16 + 256 = 272 - no RTT shadow draw and shade from fullbright to lit). Change only if you know what you are doing." =
 	[
 		0: "0 - None"
 		1: "1 - Bonemerge always (very expensive!)"
@@ -394,9 +394,9 @@
 		4: "4 - Dim, dynamic light at entity origin"
 		8: "8 - No movement interpolation"
 		16: "16 - Don't cast shadows"
-		32: "32 - Don't draw entity (entity is fully ignored by clients, NOT server; can cause collision problems)"
+		32: "32 - Don't draw entity"
 		64: "64 - Don't receive dynamic shadows"
-		128: "128 - Bonemerge only in PVS, better performance but prone to disappearing. Use with Bonemerge."
+		128: "128 - Bonemerge only in PVS"
 		256: "256 - Unsubtle blink"
 		512: "512 - Flag parent as always animating and realign each frame"
 	]
@@ -4152,14 +4152,13 @@
 ]
 @PointClass base(CPhysicsProp) studioprop() = prop_vehicle_driveable : "Driveable vehicle. WARNING: it does not function on vanilla servers. It requires Sourcemod plugin to make it work: https://github.com/Mikusch/source-vehicles"
 [
-	vehiclescript(string) : "Vehicle Script File" : "scripts/vehicles/jeep_test.txt"
-	actionScale(float) : "Scale of action input / framerate" : "1"
-	
-	VehicleLocked(choices) : "Starts locked" : 0 =
+	vehiclescript(string) : "Vehicle Script File" : "scripts/vehicles/jeep_test.txt" : "Vehicle script file. Default one is for models/buggy.mdl model. Use HL2 scripts as example."
+	actionScale(float) : "Scale of action input / framerate" : "1" : "TODO: Description."
+	VehicleLocked(choices) : "Starts locked" : 0 : "If yes, no one can enter the vehicle."=
 	[
 		0 : "No"
 		1 : "Yes"
-	]	
+	]
 	
 	output PlayerOn(void) : "Player entered the vehicle"
 	output PlayerOff(void) : "Player exited the vehicle"
