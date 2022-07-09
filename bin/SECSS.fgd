@@ -1207,6 +1207,7 @@
 		0 : "No"
 		1 : "Yes"
 	]
+	shadowcastdist(integer) : "Shadow Cast Distance" : 0 : "Sets how far the entity casts _rt_shadows shadows. 0 means default distance from the shadow_control entity."
 	damagetoenablemotion(integer) : "Health Level to Override Motion" :  : "If specified, this object will start motion disabled. Once its health has dropped below this specified amount, it will enable motion."
 	forcetoenablemotion(float) : "Physics Impact Force to Override Motion" :  : "If specified, this object will start motion disabled. Any impact that imparts a force greater than this value on the physbox will enable motion."
 	health(integer) : "Strength" : 0 : "Number of points of damage to take before breaking. 0 means don't break."
