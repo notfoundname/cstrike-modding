@@ -44,6 +44,7 @@
 		"func_door_rotating"
 		"func_hostage_rescue"
 		"func_ladder"
+		"func_pushable"
 		"game_end"
 		"game_player_equip"
 		"game_score"
@@ -64,6 +65,7 @@
 		"func_door_rotating"
 		"func_fish_pool"
 		"func_guntarget"
+		"func_pushable"
 		"func_rot_button"
 		"func_tanktrain"
 		"func_tracktrain"
@@ -157,6 +159,7 @@
 		"func_physbox"
 		"func_physbox_multiplayer"
 		"func_platrot"
+		"func_pushable"
 		"func_rot_button"
 		"func_rotating"
 		"func_tanktrain"
@@ -181,6 +184,7 @@
 		"func_illusionary"
 		"func_lod"
 		"func_platrot"
+		"func_pushable"
 		"func_tanktrain"
 		"func_trackchange"
 		"func_trackautochange"
@@ -2612,6 +2616,9 @@
 	input Alpha(integer) : "If Precipitation Type is Rain, sets the density."
 ]
 @SolidClass base(CBaseEntity) = func_proprrespawnzone : "Clientside physics props that are placed in this brush in Hammer will automatically respawn in their original place if they get destroyed or moved. The props won't respawn if a player could see it happen or if they're too close."
+[
+]
+@SolidClass base(CBaseEntity,VisibleBrush,CBreakable) color(255 203 11) = func_pushable : "OBSOLETE: You shouldn't use this entity, though it may appear in other people's maps. This entity was used in Half-Life to make pushable crates. In Source, it acts like func_physbox but cannot be pushed by bullets or any physics object."
 [
 ]
 @SolidClass base(CFuncBrush) color(255 203 11) = func_reflective_glass : "Reflects the world in realtime. Will not render the player looking at it unless they're in third person. Expect issues when other realtime surfaces like water are in the PVS. Use the texture glass/reflectiveglass001 on the reflective side."
