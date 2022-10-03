@@ -97,6 +97,7 @@
 		"filter_activator_class"
 		"filter_activator_mass_greater"
 		"filter_activator_name"
+		"filter_activator_team"
 		"filter_damage_type"
 		"filter_multi"
 		"game_ui"
@@ -2347,6 +2348,14 @@
 @FilterClass base(CBaseFilter) iconsprite("editor/filter_name") color(248 155 0) = filter_activator_name : "Filter that checks the targetname of an entity."
 [
 	filtername(target_destination) : "Filter Name" :  : "The name to filter by. TIP: Entities without any targetname can be filtered by leaving this keyvalue blank."
+]
+@FilterClass base(CBaseFilter) iconsprite("editor/filter_name") color(248 155 0) = filter_activator_team : "Filter that checks the team of a player."
+[
+	filterteam(choices) : "Filter Team" : 2 : "The team to filter by." =
+	[
+		2 : "Terrorist"
+		3 : "Counter-Terrorist"
+	]
 ]
 @FilterClass base(CBaseFilter) iconsprite("editor/filter_multiple") color(248 155 0) = filter_damage_type : "Filter that checks the type of damage inflicted."
 [
