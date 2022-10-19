@@ -1,4 +1,4 @@
-# cstrike-modding
+# cstrike-mapping
 This repository contains files and information for easier and less painful modding and mapping of Counter-Strike: Source (probably it can apply to other Source-sdk-MP2013 based games).
 
 # Installation
