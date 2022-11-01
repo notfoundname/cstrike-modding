@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 # cstrike-modding
 This repository contains updated FGDs and fixes to make mapping process easy (at least for me xd) for Counter-Strike: Source.
-=======
-# cstrike-mapping
-This repository contains files and information for easier and less painful modding and mapping of Counter-Strike: Source (probably it can apply to other Source-sdk-MP2013 based games).
->>>>>>> c0fe244ff93776f450123a863fdeabb1b2ec405d
 
 # Installation
 1. If you only need FGDs, go to step 5;
