@@ -6,7 +6,7 @@ This repository contains updated FGDs and fixes to make mapping process easy (at
 2. If not, then install [Hammer++ for CS:S](https://ficool2.github.io/HammerPlusPlus-Website/download.html) (drop into bin folder, don't launch yet);
 3. Download nfn_css_fix.zip and unpack it into Counter-Strike: Source folder with replacing;
 4. Create shortcut for Hammer++: add to the object field (first one): `-game "C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Source\cstrike"` (based on where the cstrike folder is located) and launch it;
-![screenshot](https://sun1.sibirix.userapi.com/impg/IeKwxjQd8kCls9dACIFrtCvDPRYVR4VRk0znHg/i4LTe1kOjoo.jpg?size=642x828&quality=96&sign=27b5251a9da927f5a4186e90b6b5c909&type=album)
+<br>![screenshot](https://sun1.sibirix.userapi.com/impg/IeKwxjQd8kCls9dACIFrtCvDPRYVR4VRk0znHg/i4LTe1kOjoo.jpg?size=642x828&quality=96&sign=27b5251a9da927f5a4186e90b6b5c909&type=album)
 5. Tools -> Options -> Game Configurations -> Game Data files, remove everything and add SECSS.fgd and propper.fgd;
 
 # Usage
