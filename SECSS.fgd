@@ -1,4 +1,4 @@
-//Credits goes to Pinsplash, editied by notfoundname#3292. 
+//Credits goes to Pinsplash, editied by @notfoundname. 
 //
 //TO install:
 //1. Download and drop into bin folder (where hammer.exe is located);
@@ -34,18 +34,8 @@
 	[
 		"func_nav_blocker"
 	]
-	"Gameplay"//entities used for gameplay things, so entities for things like bomb sites, hostages, windows, doors - color(0 255 0)
+	"Gameplay" // entities used for gameplay things, so entities for things like bomb sites, hostages, windows, doors - color(0 255 0)
 	[
-		"ammo_338mag"
-		"ammo_357sig"
-		"ammo_45acp"
-		"ammo_50ae"
-		"ammo_556mm"
-		"ammo_556mm box"
-		"ammo_57mm"
-		"ammo_762mm"
-		"ammo_9mm"
-		"ammo_buckshot"
 		"func_bomb_target"
 		"func_buyzone"
 		"func_breakable"
@@ -62,7 +52,6 @@
 		"info_map_parameters"
 		"info_player_counterterrorist"
 		"info_player_terrorist"
-		"item_assaultsuit"
 		"prop_door_rotating"
 		"prop_vehicle_driveable"
 		"trigger_hurt"
@@ -84,7 +73,7 @@
 		"momentary_rot_button"
 		"prop_door_rotating"
 	]
-	"Lighting & Light FX"// color(160 240 37)
+	"Lighting & Light FX" // color(160 240 37)
 	[
 		"env_lightglow"
 		"env_particlelight"
@@ -99,7 +88,7 @@
 		"point_spotlight"
 		"shadow_control"
 	]
-	"Logic"// color(248 155 0)
+	"Logic" // color(248 155 0)
 	[
 		"env_entity_maker"
 		"env_firesensor"
@@ -189,7 +178,7 @@
 		"prop_sphere"
 		"prop_vehicle_driveable"
 	]
-	"Obsolete"//idk if it makes any sense
+	"Obsolete" // idk if it makes any sense
 	[
 		"cycler"
 		"func_conveyor"
@@ -206,7 +195,7 @@
 		"info_teleport_destination"
 		"phys_torque"
 	]
-	"Optimization"// color(0 180 0)
+	"Optimization" // color(0 180 0)
 	[
 		"env_detail_controller"
 		"func_areaportal"
@@ -218,7 +207,7 @@
 		"game_gib_manager"
 		"game_weapon_manager"
 	]
-	"Physics"// color(255 0 255)
+	"Physics" // color(255 0 255)
 	[
 		"env_physexplosion"
 		"env_physimpact"
@@ -300,7 +289,7 @@
 		"trigger_soundscape"
 		"point_devshot_camera"
 	]
-	"Scripting"// color(0 255 255)
+	"Scripting" // color(0 255 255)
 	[
 		"env_explosion"
 		"env_fade"
@@ -309,18 +298,21 @@
 		"point_hurt"
 		"point_viewcontrol"
 	]
-	"Sound"// color(0 0 255)
+	"Sound" // color(0 0 255)
 	[
 		"ambient_generic"
 		"env_microphone"
+		"func_footstep_control"
+		"point_surroundtest"
+	]
+	"Soundscapes" // color(1 128 255)
+	[
 		"env_soundscape"
 		"env_soundscape_proxy"
 		"env_soundscape_triggerable"
-		"func_footstep_control"
-		"point_surroundtest"
 		"trigger_soundscape"
 	]
-	"Visual"// color(255 203 11)
+	"Visual" // color(255 203 11)
 	[
 		"color_correction"
 		"cycler"
@@ -383,10 +375,10 @@
 		"prop_static"
 		"sky_camera"
 		"spark_shower"
-		//"vgui_screen"
+		"vgui_screen"
 		"vgui_slideshow_display"
 	]
-	"Weapons, pickups"// color(160 37 240)
+	"Weapons, pickups" // color(160 37 240)
 	[
 		"item_defuser"
 		"weapon_ak47"
@@ -433,14 +425,14 @@
 ]
 @BaseClass = Effects
 [
-	effects(choices) : "Effect Flags" : 0 : "For configuring visual effects. If you want to combine effects, turn off SmartEdit and change effects value to a sum of needed ones (16 + 256 = 272 - no RTT shadow draw and fade from fullbright to lit). Change only if you know what you are doing." =
+	effects(choices) : "Effect Flags" : 0 : "For configuring visual effects. If you want to combine effects, turn off SmartEdit and change effects value to a sum of needed ones (16 + 256 = 272 - no RTT shadow draw and shade from fullbright to lit). Change only if you know what you are doing." =
 	[
 		0: "0 - None"
 		1: "1 - Bonemerge always (very expensive!)"
 		2: "2 - Bright, dynamic light at entity origin"
 		4: "4 - Dim, dynamic light at entity origin"
 		8: "8 - No movement interpolation"
-		16: "16 - Don't cast shadows (does not seem to be working)"
+		16: "16 - Don't cast shadows"
 		32: "32 - Don't draw entity"
 		64: "64 - Don't receive dynamic shadows"
 		128: "128 - Bonemerge only in PVS"
@@ -657,7 +649,7 @@
 	]
 	speed(integer) : "Speed" :  : "The speed that the button moves, in units per second or degrees per second if rotating."
 	wait(integer) : "Delay Before Reset (-1 stay)" : 1 : "Amount of time in seconds after the button has moved to the pressed position before it returns to the starting position. Once it has returned, it can be used again. If the value is set to -1, the button never returns."
-	sounds(choices) : "Press Sound" : 9 : "Sound to play when pressed and unlocked." =
+	sounds(choices) : "Press Sound 1" : 0 : "Sound to play when pressed and unlocked." =
 	[
 		0 : "None"
 		2 : "Access denied 1"
@@ -693,7 +685,7 @@
 		27 : "Moving parts 8"
 		28 : "Moving parts 9"
 	]
-	unlocked_sound(choices) : "Press when unlocked Sound" : 15 : "Sound played when the button is pressed while unlocked. If set, the sound that plays alternates between this and Press Sound 1, even if the first one is set to None." =
+	unlocked_sound(choices) : "Press Sound 2" : 0 : "Sound played when the button is pressed while unlocked. If set, the sound that plays alternates between this and Press Sound 1, even if the first one is set to None." =
 	[
 		0 : "None"
 		2 : "Access denied 1"
@@ -1164,16 +1156,10 @@
 	input TurnOff(void) : "Turns the emitter off."
 ]
 @BaseClass base(CBaseAnimating) = CItem 
-[
-	spawnflags(flags) =
+[	spawnflags(flags) =
 	[
 		1 : "Frozen in place" : 0
 	]
-]
-@BaseClass base(CItem) = CItemAmmo
-[
-	output OnPlayerTouch(void) : "Fires when player touches this entity."
-	input Use(void) : "TODO"
 ]
 @BaseClass base(CBaseEntity,Toggle) = CLight 
 [
@@ -1268,7 +1254,7 @@
 	input TurnOff(void) : "Turns off the constraint. The objects will move around as they normally would, unless they're constrained otherwise."
 	output OnBreak(void) : "Fires when the constraint is broken."
 ]
-@BaseClass base(CBaseEntity,Parent) = CPhysForce 
+@BaseClass base(CBaseEntity) = CPhysForce 
 [
 	spawnflags(flags) =
 	[
@@ -2258,7 +2244,7 @@
 	startwidth(float) : "Start Width" : 4 : "The width of the beam at the beginning."
 	endwidth(float) : "End Width" : 1 : "The width of the beam segment at the end of its lifetime."
 	spritename(string) : "Sprite Name" : "sprites/bluelaser1.vmt" : "The material to draw. The entity will only use the top row of pixels for the trail."
-	animate(choices) : "Animated" : 1 : "TODO: Tells the sprite to animate if it can? Has never been seen working." =
+	animate(choices) : "Animated" : 0 : "TODO: Tells the sprite to animate if it can? Has never been seen working." =
 	[
 		0 : "No"
 		1 : "Yes"
@@ -2863,7 +2849,7 @@
 [
 	spawnflags(flags) =
 	[
-		1 : "Use Only - Only activate from Use input. Otherwise players automatically get items upon spawning." : 1
+		1 : "Use Only - Only activate from Use input. Otherwise players automatically get items upon spawning." : 0
 	]
 	input Use(void) : "Gives the !activator the items. If the activator is not a player, the game can crash!"
 ]
@@ -3169,7 +3155,7 @@
 	]
 	model(studio) : "Helper Model" :  : "Does nothing. Meant only to serve as a reference for the proportions of something."
 ]
-@PointClass base(CBaseEntity,Parent,Angles) studio("models/characters/counterterrorist.mdl") = info_teleport_destination : "OBSOLETE: You shouldn't use this entity, though it may appear in other people's maps. This entity used to be needed for trigger_teleport's destination. Use info_target."
+@PointClass base(CBaseEntity,Parent,Angles) studio("models/editor/playerstart.mdl") = info_teleport_destination : "OBSOLETE: You shouldn't use this entity, though it may appear in other people's maps. This entity used to be needed for trigger_teleport's destination. Use info_target."
 [
 ]
 @PointClass base(CBaseEntity) decal() studio("models/editor/axis_helper_thick.mdl") color(255 203 11) = infodecal : "It adds a texture such as a sign, stain, or bullet hole onto any surface. Place them with Hammer's decal tool (Shift+D). The entity will apply the decal then remove itself if it does not have a targetname. If it does, it will wait for the Activate input. BUG: In Hammer, decals may look like they're applied to the brush a displacement came from. They will work fine in-game though, provided that they're close to the actual displacement face."
@@ -3748,7 +3734,7 @@
 	input SetSpringLength(float) : "Sets Spring Length."
 	input SetSpringDamping(float) : "Sets Damping Constant."
 ]
-@PointClass base(CPhysForce,Angles) color(255 0 255) = phys_thruster : "It pushes or spins an object."
+@PointClass base(CPhysForce,Angles,Parent) color(255 0 255) = phys_thruster : "It pushes or spins an object."
 [
 	spawnflags(flags) =
 	[
@@ -4078,7 +4064,7 @@
 @PointClass base(CBaseEntity,Angles,Parent) studioprop("models/editor/camera.mdl") color(0 255 255) = point_viewcontrol : "Players can be forced to see the world through this entity. The entity is also used for the view when players first load into the map (you don't need to change any settings for this, just add it in).\n" +
 "BUG: Various weird behavior results when using the entity's native ability to follow path_tracks. It's recommended to attach the entity to a func_tracktrain using logic_measure_movement.\n" +
 "BUG: Players will be stuck seeing out of the point_viewcontrol if the entity is deleted or they die while viewing!\n" +
-"BUG: Parenting most of the time don't work.\n" +
+"BUG: Parenting does not work. Parenting to an attachment works.\n" +
 "BUG: The entity must have something to look at to use path_tracks."
 [
 	spawnflags(flags) =
@@ -4460,7 +4446,7 @@
 @PointClass base(CWeaponCSBase) color(160 37 240) sphere(fademindist) sphere(fademaxdist) studio("models/weapons/w_pist_fiveseven.mdl") = weapon_fiveseven : "ES Five-Seven"
 [
 ]
-@PointClass base(CWeaponCSBase) color(160 37 240) sphere(fademindist) sphere(fademaxdist) studio("models/weapons/w_eq_flashbang.mdl") = weapon_flashbang : "Flashbang. Classname of thrown flashband is flashbang_projectile."
+@PointClass base(CWeaponCSBase) color(160 37 240) sphere(fademindist) sphere(fademaxdist) studio("models/weapons/w_eq_flashbang.mdl") = weapon_flashbang : "Flashbang. Classname of thrown flashbang is flashbang_projectile."
 [
 ]
 @PointClass base(CWeaponCSBase) color(160 37 240) sphere(fademindist) sphere(fademaxdist) studio("models/weapons/w_snip_g3sg1.mdl") = weapon_g3sg1 : "D3/AU-1"
