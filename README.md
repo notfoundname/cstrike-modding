@@ -1,5 +1,5 @@
-# cstrike-modding
-This repository contains updated FGD for Counter-Strike: Source.
+# SECSS
+This repository contains an updated FGD for Counter-Strike: Source.
 
 # Installation
 Go to Tools -> Options -> Game Configurations -> Game Data files, remove everything and add SECSS.fgd.;
