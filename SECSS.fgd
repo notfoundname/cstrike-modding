@@ -53,6 +53,7 @@
 		"info_player_counterterrorist"
 		"info_player_terrorist"
 		"prop_door_rotating"
+		"prop_vehicle"
 		"prop_vehicle_driveable"
 		"trigger_hurt"
 	]
@@ -82,6 +83,7 @@
 		"info_lighting"
 		"info_no_dynamic_shadow"
 		"light"
+		"light_directional"
 		"light_dynamic"
 		"light_environment"
 		"light_spot"
@@ -120,6 +122,7 @@
 		"point_servercommand"
 		"point_template"
 		"point_velocitysensor"
+		"trigger_look"
 		"trigger_multiple"
 		"trigger_once"
 		"trigger_proximity"
@@ -176,6 +179,7 @@
 		"prop_physics_override"
 		"prop_ragdoll"
 		"prop_sphere"
+		"prop_vehicle"
 		"prop_vehicle_driveable"
 	]
 	"Obsolete" // idk if it makes any sense
@@ -244,6 +248,7 @@
 		"prop_physics_override"
 		"prop_ragdoll"
 		"prop_sphere"
+		"prop_vehicle"
 		"prop_vehicle_driveable"
 		"target_changegravity"
 		"trigger_apply_impulse"
@@ -541,6 +546,16 @@
 		0 : "No static shadow"
 		1 : "Cast static shadow"
 	]
+	TeamNum(choices) : "Team Number" : 0 : "Entity's default team. See 'SetTeam' input for more info." =
+	[
+		0 : "None"
+		1 : "Spectator"
+		2 : "Terrorist"
+		3 : "Counter-Terrorist"
+	]
+	input SetTeam(integer) : "Sets entity's team.\n" +
+	"This input (as well as TeamNum k/v) exist for every entity in the game, but generally useful on brushes with PlayerTeamMatch material proxy.\n" +
+	"https://gamebanana.com/tuts/16760"
 ]
 @BaseClass = Toggle 
 [
@@ -1324,6 +1339,46 @@
 	]
 	input SetRotationDistance(float) : "Sets Rotation Distance."
 	input SetSpeed(float) : "Sets Speed."
+]
+@BaseClass base(CBaseAnimating) = CPropVehicle 
+[
+	spawnflags(flags) =
+	[
+		1 : "Always Think (Run physics every tick) - Process movement code on entity more often. Required for vehicle to actualy drive." : 1
+	]
+	actionScale(float) : "Scale of action input / framerate" :  : "TODO: Description."
+	vehiclescript(string) : "Vehicle Script File" :  : "Path to a file that defines properties about this vehicle. Look in scripts/vehicles/ for examples."
+	input Throttle(float) : "Applies force to the vehicle with bigger numbers meaning bigger force. Could be used to simulate bumpy roads."
+	input Steer(float) : "Forces the vehicle to steer a certain way. -1 is regular left steering, 1 is regular right steering. 0 is straight. Numbers higher than 1 or lower than -1 will cause the steering to be stronger and last longer.\n" +
+	"Bug: needs to be spammed at least 20 times in a single tick to work."
+	input Action(float) : "Sets Scale of action input / framerate."
+	input HandBrakeOn(void) : "Makes the vehicle start braking. Unless the player decides to hold down the brake, the brake will stop being applied instantly, so this has to be sent rapidly to have any real effect."
+	input HandBrakeOff(void) : "Makes the vehicle stop braking. If the player is holding down the brake it will instantly reapply, so this has to be sent rapidly to have any real effect."
+]
+@BaseClass base(CPropVehicle) = CPropVehicleDriveable 
+[
+	VehicleLocked(choices) : "Start locked" : 0 : "Makes the vehicle unenterable and unexitable until it is Unlocked." =
+	[ 
+		0 : "No"
+		1 : "Yes"
+
+	]
+	EnableGun(choices) : "Has Gun" : 0 : "If this vehicle has a mounted gun associated with it, set if it's functional or not." =
+	[ 
+		0 : "No"
+		1 : "Yes"
+
+	]
+	input Unlock(void) : "Makes vehicle enterable and exitable."
+	input Lock(void) : "Makes vehicle unenterable and unexitable."
+	input TurnOff(void) : "Makes the vehicle inoperable."
+	input TurnOn(void) : "Makes the vehicle operational again."
+	output PlayerOn(void) : "Fires when the player enters the vehicle. Activator is that player."
+	output PlayerOff(void) : "Fires when the player leaves the vehicle. Activator is that player."
+	output PressedAttack(void) : "Fires when the driver starts using their primary fire (+attack)."
+	output PressedAttack2(void) : "Fires when the driver starts using their secondary fire (+attack2)."
+	output AttackAxis(integer) : "Fires constantly when a driver is in the vehicle. Automatically puts 0 or 1, depending on if the driver is using their primary fire, as the input parameter, unless overridden by the mapper."
+	output Attack2Axis(integer) : "Fires constantly when a driver is in the vehicle.  Automatically puts 0 or 1, depending on if the driver is using their secondary fire, as the input parameter, unless overridden by the mapper."
 ]
 @BaseClass base(CBaseEntity,Parent) = CRopeKeyframe 
 [
@@ -2968,6 +3023,9 @@
 [
 	massScale(float) : "Mass scale" : 1 : "Multiplier for the constrained object's mass. 1 = no change."
 ]
+@PointClass base(CBaseEntity) iconsprite("editor/info_landmark") color(248 155 0) = info_landmark : "It is used by trigger_teleport's 'Local Destination Landmark' keyvalue. Also used as a generic target entity, much like info_target."
+[
+]
 @PointClass iconsprite("editor/info_lighting") color(160 240 37) = info_lighting : "When a prop_static's Lighting Origin is set to this entity's targetname, the prop will set its origin to the origin of the info_lighting during compile time. This will affect its lighting and cubemap reflections.\n"+
 "To use this with other point entities, use the same keyvalue, but change the info_lighting to an info_target. Brush entities should use the Minimum Light Level keyvalue, or they can be stored in a remote location with better lighting, then teleported to the correct position.\n"+
 "BUG: In unknown circumstances, sometimes puts the origin in the wrong spot or doesn't move it at all. Perhaps there's a conflict with $illumposition?"
@@ -3189,6 +3247,12 @@
 	_fifty_percent_distance(float) : "50 percent falloff distance" : 0 : "How far away from the source that light weakens to 50% its original brightness. Do not use these if already using the constant-linear-quadratic falloff KVs."
 	_zero_percent_distance(float) : "0 percent falloff distance" : 0 : "How far away from the source that light weakens to 0.4% (1/256) its original brightness, at which point VRAD will quit calculating it."
 	_hardfalloff(float) : "hard falloff" : 0 : "Light will not hit surfaces this far away from the source."
+]
+@PointClass base(CLight,Angles) iconsprite("editor/light_env") color(160 240 37) = light_directional : "NOTE: requires Slammin's modified VRAD to work, because it does not exist on engine level, therefore naming it is useless.\n" +
+"It makes light come from skybox tool textures in the map in order to simulate sunlight. It can't use ambient settings like light_environment can, but it can be used multiple times in one map, even with a light_environment. "
+[
+	pitch(integer) : "Pitch" : -57 : "Overrides the pitch in Pitch Yaw Roll. VRAD ignores the regular one, so it must be specified. Note that this pitch is the negative of the regular one, so -90 is straight down. Both pitch values should be opposites."
+	SunSpreadAngle(float) : "Sun Spread Angle" : 0 : "How much the angles of the light particles can vary to simulate a penumbra effect. The lightmap scale of the brushes which light falls on also determines how blurry the shadows look."
 ]
 @PointClass base(CBaseEntity,Parent,Toggle) iconsprite("editor/light") sphere(distance) lightcone() size(-4 -4 -4, 4 4 4) color(160 240 37) = light_dynamic : "Light that's computed and rendered in realtime. It can move and change its properties at any moment. The Pitch keyvalue doesn't actually affect the entity ingame. All it does is set the pitch of Hammer's lightcone helper. To see where light will cast, set Pitch to the first number in Pitch Yaw Roll and flip the + or - sign. env_projectedtexture is generally agreed upon as a better entity for dynamic lighting for its more realistic results and less unintuitive setup. light_dynamic does have some advantages, though; more than one can be on at once, and it can emit in all directions."
 [
@@ -4201,30 +4265,18 @@
 [
 	radius(integer) readonly : "Size" : 12 : "Size of the collision sphere. Can't be changed."
 ]
-@PointClass base(CPhysicsProp) studioprop() = prop_vehicle_driveable : "Driveable vehicle. WARNING: it does not function on vanilla servers. It requires Sourcemod plugin to make it work: https://github.com/Mikusch/source-vehicles"
+@PointClass base(CPropVehicle) studio() = prop_vehicle : "Vehicle prop that cannot be entered. Can be controlled via inputs."
 [
-	vehiclescript(string) : "Vehicle Script File" : "scripts/vehicles/jeep_test.txt" : "Vehicle script file. Default one is for models/buggy.mdl model. Use HL2 scripts as example."
-	actionScale(float) : "Scale of action input / framerate" : "1" : "TODO: Description."
-	VehicleLocked(choices) : "Starts locked" : 0 : "If yes, no one can enter the vehicle."=
-	[
-		0 : "No"
-		1 : "Yes"
-	]
-	
-	output PlayerOn(void) : "Player entered the vehicle"
-	output PlayerOff(void) : "Player exited the vehicle"
-	output PressedAttack(void) : "Player Pressed attack key"
-	output PressedAttack2(void) : "Player Pressed attack2 key"
-	output AttackAxis(string) : "State of attack button [0,1]"
-	output Attack2Axis(string) : "State of attack2 button [0,1]"
-	
-	input Action(float) : "Set the speed of the action animation"
-	input TurnOn(void) : "Turn on: Start engine & enable throttle"
-	input TurnOff(void) : "Turn off: Stop engine, disable throttle, engage brakes."
-	input Lock(void) : "Prevent the player from entering or exiting the vehicle."
-	input Unlock(void) : "Re-allow the player to enter or exit the vehicle."
-	input HandBrakeOn(void) : "Turns the handbrake on"
-	input HandBrakeOff(void): "Releases the handbrake"
+	model(studio) : "Model" : "models/buggy.mdl" : "Model to use."
+	vehiclescript(string) : "Vehicle Script File" : "scripts/vehicles/jeep_test.txt" : "Path to a file that defines properties about this vehicle."
+]
+@PointClass base(CPropVehicleDriveable) studio() = prop_vehicle_driveable : "Vehicle prop that can be entered and controlled by a player. Bug: When players enter the vehicle, their camera will move to the wrong position and they will have no control over the vehicle, nor be able to exit. To fix this, use a Sourcemod plugin: https://github.com/Mikusch/source-vehicles"
+[
+	model(studio) : "Model" : "models/buggy.mdl" : "Model to use."
+	vehiclescript(string) : "Vehicle Script File" : "scripts/vehicles/jeep_test.txt" : "Path to a file that defines properties about this vehicle."
+	input ShowHudHint(void) : "Shows the driver the HUD hints for the turbo and handbrake. The jeep automatically sends this to itself the first few times the player enters it."
+	input StartRemoveTauCannon(void) : "Moves the gun off the jeep. Meant to be immediately followed by FinishRemoveTauCannon."
+	input FinishRemoveTauCannon(void) : "Disables and hides the gun. BUG: Any decals that got on the gun will still be visible."
 ]
 @PointClass base(CBaseEntity) iconsprite("editor/shadow_control") color(160 240 37) = shadow_control : "Sets properties of dynamic shadows cast by moving objects." +
 "BUG: Shadows may clip through walls. This can be worked around by decreasing shadow distance or using info_no_dynamic_shadow and mark faces that should not receive shadows."
@@ -4299,6 +4351,22 @@
 	input SetMagnitude(float) : "Sets Magnitude."
 	output ImpactForce(vector) : "Fires when the Impact input gets sent. Automatically puts the force that was applied (before noise is added, not accounting for mass) as the input parameter, unless overridden by the mapper."
 ]
+@SolidClass base(CTriggerMultiple) color(248 155 0) = trigger_look : "Fires an output when a player is inside it and looks at a certain spot. The entity does not check if the player has a line of sight to the target; only if they're facing its direction. BUG: If multiple entities in the map have the same name as the target entity, then OnTrigger may fire inconsistently. The output may either be delayed or never fire at all. These effects seem to worsen the more offending entities there are in the map. Does not work through portals."
+[
+	spawnflags(flags) =
+	[
+		128 : "Fire Once - Entity removes itself after firing." : 0
+		256 : "Use Velocity instead of facing - Use the direction the player is going in, instead of the direction they're looking in." : 0
+	]
+	target(target_destination) : "Look Target" :  : "The name of the entity to be looked at."
+	LookTime(float) : "LookTime" : "0.5" : "Player must look at the target for this long before firing the output."
+	FieldOfView(float) : "FieldOfView" : "0.9" : "How closely the player must be looking towards the Look Target to fire the output. 1.0 = directly at it, 0.0 = 90 degrees away, -1.0 any direction."
+	Timeout(float) : "Timeout" :  : "If non-zero, how long to wait for the player to look towards the target once they're inside the trigger. See OnTimeout. NOTE: When this keyvalue is set, the outputs will not fire again if one has already, until the player leaves and reenters the trigger. TODO: Is that a bug?"
+	input LookTime(float) : "Sets LookTime."
+	input FieldOfView(float) : "Sets FieldOfView."
+	output OnTrigger(void) : "Fires when the player has been inside the trigger and has been looking at the Look Target for the amount of time specified by LookTime."
+	output OnTimeout(void) : "Fires when the player has been inside the trigger but did not look at Look Target for the time specified in LookTime within the time specified in Timeout."
+]
 @SolidClass base(CTriggerMultiple) color(248 155 0) = trigger_multiple : "Standard, most common entity for trigger logic. Simply fires outputs."
 [
 ]
@@ -4325,7 +4393,7 @@
 		128 : "Once Only - Trigger removes itself after pushing a single object once." : 0
 	]
 	pushdir(angle) : "Push Direction (Pitch Yaw Roll)" : "0 0 0" : "Direction of force."
-	speed(float) : "Speed of Push" : 40 : "How much to push things."
+	speed(float) : "Speed of Push" : 40 : "How much to push things. Spams console if above 1000."
 	alternateticksfix(float) : "Scale force for alternate ticks" : 0 : "If non-zero, force is multiplied by this much when the server is running with sv_alternateticks 1. TODO: What are good values for this?"
 ]
 @SolidClass base(CBaseTrigger) = trigger_remove : "It removes things that touch it, as if they were sent the Kill input. Entities programmed to not activate triggers (e.g. logic entities, weapons) will not be removed. Be VERY careful when using this. Even a player can be removed!"
