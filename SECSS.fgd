@@ -198,6 +198,7 @@
 		"game_gib_manager"
 		"info_teleport_destination"
 		"phys_torque"
+		"trigger_brush"
 	]
 	"Optimization" // color(0 180 0)
 	[
@@ -639,6 +640,7 @@
 	input HideWeapon(void) : "If the weapon is being held by someone, makes it invisible. The weapon will reappear if they switch weapons."
 	output OnPlayerUse(void) : "Fires when a player +uses this weapon."
 	output OnPlayerPickup(void) : "Fires when a player picks up this weapon."
+	output OnCacheInteraction(void) : "Fires every tick when a player attempts to pick up this weapon, even if he can't."
 ]
 @BaseClass base(CBaseEntity) = CBaseFilter 
 [
@@ -1312,7 +1314,7 @@
 	input DisableFloating(void) : "If the object would normally float when in water, tell it to not float. There seems to be no way to re-enable floating behavior."
 	output OnAwakened(void) : "Fires when the prop has woken (force was applied to it while asleep, or the Wake input was sent)."
 	output OnMotionEnabled(void) : "Fires when motion has been enabled on the prop, either via the Health Level to Override Motion or Physics Impact Force to Override Motion keyvalues, or from the EnableMotion input."
-	output OnPlayerUse(void) : "Fires when the player has +used the prop. Requires 'Generate output on +use' to be checked."
+	output OnPlayerUse(void) : "Fires when the player has +used the prop. Requires 'Generate output on +use' to be checked. \nBUG: !activator, as well as !caller are the physics prop itself! Maybe !pvsplayer could work."
 	output OnOutOfWorld(void) : "Fires whenever the object is detected to be outside the world. Specifically, it checks if the object is outside of the world's bounding box or if the object is traveling at over 2000 units per second in any cardinal direction."
 ]
 @BaseClass base(CBasePropDoor) = CPropDoorRotating 
@@ -4334,6 +4336,33 @@
 	impulse_dir(angle) : "Impulse Direction" :  : "Angle to push objects in."
 	force(float) : "Impulse Force" :  : "Force to push objects with."
 	input ApplyImpulse(void) : "Applies the force."
+]
+@SolidClass base(CBaseEntity,EnableDisable,Parent,RenderFields) color(255 0 255) = trigger_brush : "OBSOLETE: You shouldn't use this entity, though it may appear in other people's maps. It's an entity which was used during Half-Life 2's development which would filter inputs based on a few things. It's function has been replaced by trigger flags and filter entities."
+[
+	solid(choices) : "Collisions" : 6 : "Method of collision for this entity." =
+	[
+		0 : "None"
+		1 : "BSP (QPhysics)"
+		2 : "Bounding Box"
+		4 : "Oriented Bounding Box"
+		6 : "VPhysics"
+	]
+	InputFilter(choices) : "Input Filter" : 0 : "Used to specify which inputs this entity will accept." =
+	[
+		0 : "Allow all inputs"
+		8 : "Ignore Touch/Untouch"
+		16 : "Ignore Use"
+		32 : "Ignore All"
+	]
+	DontMessageParent(choices) : "Don't alert parent" : 0 : "If yes, OnStartTouch, OnEndTouch outputs or Use input will be forwarded to parented entity." =
+	[
+		0 : "Yes"
+		1 : "No"
+	]
+	input Use(void) : "Fires the OnUse output."
+	output OnUse(void) : "Fired when the Use input is given."
+	output OnStartTouch(void) : "Fired when an entity starts touching this trigger."
+	output OnEndTouch(void) : "Fired when an entity stops touching this trigger."
 ]
 @SolidClass base(CBaseTrigger) color(255 0 255) = trigger_gravity : "It gives a custom gravity setting to players (and players only, despite the flags). The player will keep that gravity setting until their gravity is changed by another trigger_gravity. Even if they die, they'll still have the gravity amount they had before. BUG: Filters do not work with this entity."
 [
