@@ -4280,7 +4280,11 @@
 		0 : "Default font."
 	]
 	color(color255) : "Color" : "255 255 255 255" : "Color of the text. 4th number controls alpha."
-	rainbow(boolean) : "Rainbow" : : "Makes the text cycle through a rainbow."
+	rainbow(choices) : "Rainbow" : : "Makes the text cycle through a rainbow." =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
 	input SetText(string) : "Sets Entity Message."
 	input SetTextSize(float) : "Sets Text Size."
 	input SetTextSpacingX(float) : "Sets Text Spacing X."
@@ -4288,7 +4292,7 @@
 	input SetColor(color255) : "Sets Color."
 	input SetOrientation(integer) : "Sets Orientation type."
 	input SetFont(integer) : "Sets Font."
-	input SetRainbow(boolean) : "Sets Rainbow."
+	input SetRainbow(integer) : "Sets Rainbow."
 ]
 @PointClass base(Angles) studioprop() color(255 203 11) = prop_detail : "Prop that can turn to face the camera."
 [
