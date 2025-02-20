@@ -112,6 +112,8 @@
 		"logic_branch_listener"
 		"logic_case"
 		"logic_compare"
+		"logic_eventlistener"
+		"logic_eventlistener_itemequip"
 		"logic_multicompare"
 		"logic_relay"
 		"logic_script"
@@ -948,7 +950,7 @@
 	[
 		64 : "Use Hitboxes for Renderbox TODO: Does this REALLY do that?" : 0
 		//128 : "TODO: 'No VPhysics'" : 0
-		//256 : "Start with collision disabled" : 0 //these things does not seem to work
+		//256 : "Start with collision disabled" : 0 //these things do not seem to work
 	]
 	StartDisabled(choices) : "Start Disabled" : 0 : "Makes the prop invisible but solid. It can be made visible with the Enable input." =
 	[
@@ -3520,6 +3522,101 @@
 	output OnGreaterThan(float) : "Fires if Initial value is greater than Compare value. Automatically puts Initial value as the input parameter, unless overridden by the mapper."
 	output OnLessThan(float) : "Fires if Initial value is less than Compare value. Automatically puts Initial value as the input parameter, unless overridden by the mapper."
 ]
+@PointClass base(CBaseEntity) color(248 155 0) = logic_eventlistener : "Fires an output when an event signified in code occurs."
+[
+	EventName(choices) : "Event Name" : "player_changename" : "Name of the event to listen for." =
+	[
+		"player_changename" : "player_changename (player changed Steam name)"
+		"player_death" : "player_death"
+		"entity_killed" : "entity_killed (player died)"
+		"player_falldamage" : "player_falldamage"
+		"player_footstep" : "player_footstep (footstep sound was made)"
+		"player_hurt" : "player_hurt"
+		"player_jump" : "player_jump"
+		"player_spawn" : "player_spawn (player respawned, does not fire at round start)"
+		"player_team" : "player_team (player joined team, including spec)"
+		"player_use" : "player_use (player used use key on something)"
+		"break_prop" : "break_prop"
+		"break_breakable" : "break_breakable (func_breakable broken)"
+		"other_death" : "other_death (non-player entity lost all health)"
+		"item_purchase" : "item_purchase (item bought, does not fire in DZ)"
+		"player_radio" : "player_radio"
+		"item_pickup" : "item_pickup (something picked up)"
+		"enter_buyzone" : "enter_buyzone (player entered buyzone)"
+		"exit_buyzone" : "exit_buyzone (player left buyzone)"
+		"buytime_ended" : "buytime_ended"
+		"dm_bonus_weapon_start" : "dm_bonus_weapon_start (DM bonus weapon announced)"
+		"round_announce_warmup" : "round_announce_warmup (warmup start)"
+		"round_start" : "round_start (new round/warmup started)"
+		"round_announce_match_point" : "round_announce_match_point (match point message)"
+		"round_announce_final" : "round_announce_final (final round message)"
+		"round_announce_match_start" : "round_announce_match_start (round start, not including warmup)"
+		"round_freeze_end" : "round_freeze_end (freeze time ended)"
+		"round_time_warning" : "round_time_warning (10 seconds left)"
+		"round_end" : "round_end (round won)"
+		"cs_pre_restart" : "cs_pre_restart (new round about to start)"
+		"player_given_c4" : "player_given_c4 (player given C4 at round start or found one in a DZ crate)"
+		"bomb_pickup" : "bomb_pickup (C4 acquired)"
+		"bomb_dropped" : "bomb_dropped (C4 dropped in any way)"
+		"bomb_beginplant" : "bomb_beginplant"
+		"bomb_planted" : "bomb_planted"
+		"bomb_abortplant" : "bomb_abortplant"
+		"bomb_beep" : "bomb_beep (fires as bomb beeps)"
+		"bomb_begindefuse" : "bomb_begindefuse"
+		"bomb_defused" : "bomb_defused"
+		"bomb_abortdefuse" : "bomb_abortdefuse"
+		"bomb_exploded" : "bomb_exploded"
+		"enter_bombzone" : "enter_bombzone (player entered bombsite)"
+		"exit_bombzone" : "exit_bombzone (player left bombsite)"
+		"hostage_follows" : "hostage_follows (hostage picked up)"
+		"hostage_rescued" : "hostage_rescued (does not fire in danger zone)"
+		"hostage_rescued_all" : "hostage_rescued_all (does not fire in danger zone)"
+		"hostage_hurt" : "hostage_hurt (does not fire in danger zone)"
+		"enter_rescue_zone" : "enter_rescue_zone (player entered rescue zone)"
+		"exit_rescue_zone" : "exit_rescue_zone (player left rescue zone)"
+		"weapon_fire" : "weapon_fire (primary attack on a weapon, excluding C4)"
+		"weapon_fire_on_empty" : "weapon_fire_on_empty (tried to fire gun with no ammo)"
+		"weapon_zoom" : "weapon_zoom (scope button used on sniper rifle)"
+		"weapon_zoom_rifle" : "weapon_zoom_rifle (scope button used on AUG/SG)"
+		"silencer_detach" : "silencer_detach (player started to take off silencer)"
+		"silencer_off" : "silencer_off (silencer taken off weapon)"
+		"silencer_on" : "silencer_on (silencer put back on weapon)"
+		"bullet_impact" : "bullet_impact (bullet hit something, fires multiple times when wallbanging)"
+		"inspect_weapon" : "inspect_weapon"
+		"grenade_thrown" : "grenade_thrown (utility used)"
+		"grenade_bounce" : "grenade_bounce (utility bounced off something)"
+		"decoy_started" : "decoy_started (decoy started making sounds)"
+		"decoy_firing" : "decoy_firing (decoy made a sound)"
+		"decoy_detonate" : "decoy_detonate (decoy exploded)"
+		"flashbang_detonate" : "flashbang_detonate"
+		"player_blind" : "player_blind (player blinded by flashbang)"
+		"hegrenade_detonate" : "hegrenade_detonate"
+		"molotov_detonate" : "molotov_detonate (firebomb exploded in air or on ground)"
+		"inferno_startburn" : "inferno_startburn (firebomb hit ground)"
+		"inferno_expire" : "inferno_expire (fire stopped in any way)"
+		"inferno_extinguish" : "inferno_extinguish (fire stopped by smoke)"
+		"smokegrenade_detonate" : "smokegrenade_detonate"
+		"smokegrenade_expired" : "smokegrenade_expired (smoke mostly gone)"
+		"tagrenade_detonate" : "tagrenade_detonate (tactical awareness grenade detonated)"
+		"firstbombs_incoming_warning" : "firstbombs_incoming_warning (first missile wave warning in danger zone)"
+		"choppers_incoming_warning" : "choppers_incoming_warning ('supply drop incoming' message in danger zone)"
+		"survival_paradrop_spawn" : "survival_paradrop_spawn (a prop_paradrop_crate was made)"
+		"survival_paradrop_break" : "survival_paradrop_break (a prop_paradrop_crate was broken)"
+		"survival_no_respawns_warning" : "survival_no_respawns_warning (respawn cutoff warning shown in danger zone)"
+		"survival_no_respawns_final" : "survival_no_respawns_final (players can no longer respawn in danger zone)"
+	]
+	IsEnabled(boolean) : "Start Enabled" : 1 : "Entity starts active."
+	TeamNum(choices) : "Team Number" : -1 : "If set, will only fire its output if the event is generated from someone of the specified team." =
+	[
+		-1 : "Don't care"
+		2 : "Terrorists"
+		3 : "Counter-Terrorists"
+	]
+	FetchEventData(boolean) : "Fetch Event Data" : 1 : "Copies the game event data to the event_data table in the script scope of this entity when the event is fired."
+	input Enable(void) : "Enables the entity."
+	input Disable(void) : "Disables the entity."
+	output OnEventFired(void) : "Fires when the event occurs."
+]
 @PointClass base(CBaseEntity) color(255 0 255) = logic_measure_movement : "It measures the position of an entity relative to another entity, then moves a third entity in a similar way, relative to a 4th entity. This can be used to make an entity move as if it's parented, but rotate on its own axes. Neither of the references can be the logic_measure_movement itself, or odd behavior will occur. Two logic_measure_movements can be set up to make two entities move each other equally, but it may look jittery."
 [
 	MeasureTarget(target_destination) : "Entity to Measure" :  : "The entity which will have its movement measured."
@@ -4275,9 +4372,21 @@
 		1 : "Always rotate to face the camera head on."
 		2 : "Rotate to face the camera, but ignore the Z axis."
 	]
-	font(choices) : "Font" : 0 : "A number for letter styling. TODO: what are possible values?" =
+	font(choices) : "Font type" : 0 : "A number for letter styling. Font types and amount are hardcoded and cannot be changed." =
 	[
-		0 : "Default font."
+		0 : "TF2 Build - A thick, all upper-case font (smoothen with shadows)"
+		1 : "TF2 Build (crisp without shadows)"
+		2 : "TF2 - A skinny, all upper-case font (smoothen with shadows)"
+		3 : "TF2 (crisp without shadows)"
+		4 : "Liberation Sans (smoothen with shadows)"
+		5 : "Liberation Sans (crisp without shadows)"
+		6 : "TF2 Professor - A rough, chalk-like font (smoothen with shadows)"
+		7 : "TF2 Professor (crisp without shadows)"
+		8 : "Roboto Mono (smoothen with shadows)"
+		9 : "Roboto Mono (crisp without shadows)"
+		10 : "Roboto Mono (crisp with shadows)"
+		11 : "Roboto Mono Green (smoothen without shadows)"
+		// 12 : "TF2 Build 3" Broken
 	]
 	color(color255) : "Color" : "255 255 255 255" : "Color of the text. 4th number controls alpha."
 	rainbow(choices) : "Rainbow" : : "Makes the text cycle through a rainbow." =
